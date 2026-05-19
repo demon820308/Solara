@@ -8,6 +8,8 @@
 | <img src="https://github.com/user-attachments/assets/7fcfd485-bcd4-46f9-887a-0a972dce3be3" height="700"/> | <img src="https://github.com/user-attachments/assets/bb092569-0a7f-47f6-b7e9-c07ea56949cf" height="700"/> | <img src="https://github.com/user-attachments/assets/02b830e3-292f-4880-91f2-86ec818b877a" height="700"/> |
 
 
+> 🆕 更新说明：下载歌曲时已改为直接拉取音频文件并触发浏览器保存，避免先弹出原生播放器面板；下载文件名保持为 `歌名 - 歌手.扩展名`。
+
 ## 🤝 参与贡献
 感谢 GD音乐台(music.gdstudio.xyz)提供的免费API
 
