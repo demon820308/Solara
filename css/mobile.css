@@ -1180,6 +1180,16 @@ body.mobile-view .search-results {
     border-radius: 20px;
 }
 
+body.mobile-view.search-mode .search-results {
+    max-height: none;
+    height: 100%;
+    opacity: 1;
+    padding-top: 15px;
+    padding-bottom: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 body.mobile-view .search-results-list {
     display: flex;
     flex-direction: column;

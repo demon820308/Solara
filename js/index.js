@@ -2340,9 +2340,15 @@ function toggleSearchMode(enable) {
     state.isSearchMode = enable;
     if (enable) {
         dom.container.classList.add("search-mode");
+        if (document.body) {
+            document.body.classList.add("search-mode");
+        }
         debugLog("进入搜索模式");
     } else {
         dom.container.classList.remove("search-mode");
+        if (document.body) {
+            document.body.classList.remove("search-mode");
+        }
         debugLog("退出搜索模式");
     }
 }
