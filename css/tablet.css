@@ -31,7 +31,7 @@ body.tablet-view .cover-area {
     /* Push the platter down from the top even more on large tablet screens */
     margin-top: clamp(20px, 5vh, 40px);
     /* Push the song name far away from the platter */
-    gap: clamp(32px, 8vw, 50px);
+    gap: clamp(50px, 12vw, 80px);
 }
 
 body.tablet-view .mobile-turntable__platter {

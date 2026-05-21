@@ -38,7 +38,7 @@ body.mobile-view {
     /* Responsive width tokens for adaptive tablet/foldable design */
     --mobile-max-width: 420px;
     --mobile-search-max-width: 440px;
-    --mobile-platter-size: min(65vw, 38vh, 260px);
+    --mobile-platter-size: min(55vw, 32vh, 220px);
 
     /* Mobile-specific theme variables - Light mode default */
     --mobile-container-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(245, 250, 248, 0.82));
@@ -166,9 +166,9 @@ body.mobile-view .container {
     backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
     border-radius: 32px;
-    padding: clamp(16px, 5vw, 28px);
-    padding-top: calc(env(safe-area-inset-top) + clamp(18px, 6vw, 32px));
-    padding-bottom: calc(env(safe-area-inset-bottom) + clamp(22px, 7vw, 32px));
+    padding: clamp(12px, 4vw, 24px);
+    padding-top: calc(env(safe-area-inset-top) + clamp(8px, 2vw, 16px));
+    padding-bottom: calc(env(safe-area-inset-bottom) + clamp(16px, 5vw, 24px));
     box-shadow: 0 32px 90px rgba(0, 0, 0, 0.25);
     display: flex;
     flex-direction: column;
@@ -200,7 +200,7 @@ body.mobile-view .mobile-toolbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: clamp(4px, 3vw, 12px);
+    margin-top: clamp(0px, 1vw, 6px);
     z-index: 2;
 }
 
