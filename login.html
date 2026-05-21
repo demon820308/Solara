@@ -14,8 +14,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-  <link rel="stylesheet" href="css/style.css?v=20260521_v7">
-  <script src="js/i18n.js?v=20260521_v7"></script>
+  <link rel="stylesheet" href="css/style.css?v=20260521_v8">
+  <script src="js/i18n.js?v=20260521_v8"></script>
   <script>
     (function () {
       const ua = navigator.userAgent || "";
@@ -32,7 +32,7 @@
         document.documentElement.classList.add("desktop-view");
         const desktopLink = document.createElement("link");
         desktopLink.rel = "stylesheet";
-        desktopLink.href = "css/desktop.css?v=20260521_v7";
+        desktopLink.href = "css/desktop.css?v=20260521_v8";
         desktopLink.id = "desktopStylesheet";
         document.head.appendChild(desktopLink);
         return;
@@ -43,13 +43,13 @@
       }
       const link = document.createElement("link");
       link.rel = "stylesheet";
-      link.href = "css/mobile.css?v=20260521_v7";
+      link.href = "css/mobile.css?v=20260521_v8";
       link.id = "mobileStylesheet";
       document.head.appendChild(link);
       if (isTablet) {
         const tabletLink = document.createElement("link");
         tabletLink.rel = "stylesheet";
-        tabletLink.href = "css/tablet.css?v=20260521_v7";
+        tabletLink.href = "css/tablet.css?v=20260521_v8";
         tabletLink.id = "tabletStylesheet";
         document.head.appendChild(tabletLink);
       }
