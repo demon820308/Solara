@@ -292,9 +292,11 @@ body.mobile-view .mobile-turntable {
     position: relative;
     display: flex;
     justify-content: center;
+    flex-shrink: 0;
 }
 
 body.mobile-view .mobile-turntable__platter {
+    flex-shrink: 0;
     width: var(--mobile-platter-size);
     max-width: 43vh;
     height: var(--mobile-platter-size);
@@ -357,10 +359,11 @@ body.mobile-view .mobile-inline-lyrics {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+    flex-shrink: 0;
     width: var(--mobile-platter-size);
-    max-width: 43vh;
+    max-width: 46vh;
     height: var(--mobile-platter-size);
-    max-height: 43vh;
+    max-height: 46vh;
     border-radius: 26px;
     background: var(--mobile-item-bg);
     border: 1px solid var(--mobile-item-border);
