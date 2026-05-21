@@ -130,6 +130,14 @@
         }
         initialized = true;
 
+        // 动态将蒙版、搜索区域和播放面板移出 .container 到 body 下，彻底解决 iOS/WebKit 的 backdrop-filter 层叠上下文 Bug
+        const scrim = document.getElementById("mobileOverlayScrim");
+        const search = document.getElementById("searchArea");
+        const panel = document.getElementById("mobilePanel");
+        if (scrim) document.body.appendChild(scrim);
+        if (search) document.body.appendChild(search);
+        if (panel) document.body.appendChild(panel);
+
         document.body.classList.add("mobile-view");
         const initialView = "playlist";
         document.body.setAttribute("data-mobile-panel-view", initialView);
