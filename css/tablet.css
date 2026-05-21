@@ -35,9 +35,41 @@ body.tablet-view .cover-area {
 }
 
 body.tablet-view .mobile-turntable__platter {
-    /* Extend the max-height slightly for tablet to allow the larger min() bounds */
-    max-width: 48vh;
-    max-height: 48vh;
+    flex-shrink: 0 !important;
+    width: var(--mobile-platter-size) !important;
+    height: var(--mobile-platter-size) !important;
+    aspect-ratio: 1 / 1 !important;
+    align-self: center !important;
+    max-width: 48vh !important;
+    max-height: 48vh !important;
+    border-radius: 50% !important;
+}
+
+body.tablet-view .album-cover {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    width: 58% !important;
+    height: 58% !important;
+    min-height: 0 !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: translate(-50%, -50%) !important;
+    border-radius: 50% !important;
+    aspect-ratio: 1 / 1 !important;
+}
+
+body.tablet-view .album-cover img {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    object-fit: cover !important;
+    border-radius: 50% !important;
+    aspect-ratio: 1 / 1 !important;
 }
 
 body.tablet-view .mobile-inline-lyrics {
