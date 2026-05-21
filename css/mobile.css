@@ -38,6 +38,7 @@ body.mobile-view {
     /* Responsive width tokens for adaptive tablet/foldable design */
     --mobile-max-width: 420px;
     --mobile-search-max-width: 440px;
+    --mobile-platter-size: min(78vw, 320px);
 
     /* Mobile-specific theme variables - Light mode default */
     --mobile-container-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(245, 250, 248, 0.82));
@@ -89,18 +90,21 @@ body.mobile-view.dark-mode {
     body.mobile-view {
         --mobile-max-width: 520px;
         --mobile-search-max-width: 540px;
+        --mobile-platter-size: 340px;
     }
 }
 @media screen and (min-width: 768px) {
     body.mobile-view {
         --mobile-max-width: 680px;
         --mobile-search-max-width: 700px;
+        --mobile-platter-size: 420px;
     }
 }
 @media screen and (min-width: 1024px) {
     body.mobile-view {
         --mobile-max-width: 760px;
         --mobile-search-max-width: 780px;
+        --mobile-platter-size: 460px;
     }
 }
 
@@ -172,7 +176,8 @@ body.mobile-view .container {
     position: relative;
     overflow: visible;
     flex: 1 1 auto;
-    min-height: calc(var(--mobile-vh, 100dvh) - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 32px);
+    height: calc(var(--mobile-vh, 100dvh) - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 32px);
+    max-height: calc(var(--mobile-vh, 100dvh) - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 32px);
     box-sizing: border-box;
 }
 
@@ -289,7 +294,7 @@ body.mobile-view .mobile-turntable {
 }
 
 body.mobile-view .mobile-turntable__platter {
-    width: min(78vw, 320px);
+    width: var(--mobile-platter-size);
     aspect-ratio: 1 / 1;
     border-radius: 50%;
     background: radial-gradient(circle at 48% 50%, #1a1d25 0%, #05070c 65%, #000 100%);
@@ -349,9 +354,9 @@ body.mobile-view .mobile-inline-lyrics {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    width: min(78vw, 320px);
+    width: var(--mobile-platter-size);
     max-width: 100%;
-    height: min(78vw, 320px);
+    height: var(--mobile-platter-size);
     border-radius: 26px;
     background: var(--mobile-item-bg);
     border: 1px solid var(--mobile-item-border);
