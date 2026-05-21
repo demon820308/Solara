@@ -1,0 +1,46 @@
+/* Tablet-specific layout overrides for Solara Music Player */
+
+body.tablet-view {
+    --mobile-platter-size: min(55vw, 42vh, 360px);
+}
+
+@media screen and (min-width: 480px) {
+    body.tablet-view {
+        --mobile-max-width: 600px;
+        --mobile-search-max-width: 620px;
+        --mobile-platter-size: min(50vw, 45vh, 380px);
+    }
+}
+@media screen and (min-width: 768px) {
+    body.tablet-view {
+        --mobile-max-width: 740px;
+        --mobile-search-max-width: 760px;
+        --mobile-platter-size: min(45vw, 46vh, 420px);
+    }
+}
+@media screen and (min-width: 1024px) {
+    body.tablet-view {
+        --mobile-max-width: 820px;
+        --mobile-search-max-width: 840px;
+        --mobile-platter-size: min(45vw, 48vh, 460px);
+    }
+}
+
+/* Specific layout spacing for tablets */
+body.tablet-view .cover-area {
+    /* Push the platter down from the top even more on large tablet screens */
+    margin-top: clamp(20px, 5vh, 40px);
+    /* Push the song name far away from the platter */
+    gap: clamp(32px, 8vw, 50px);
+}
+
+body.tablet-view .mobile-turntable__platter {
+    /* Extend the max-height slightly for tablet to allow the larger min() bounds */
+    max-width: 48vh;
+    max-height: 48vh;
+}
+
+body.tablet-view .mobile-inline-lyrics {
+    max-width: 48vh;
+    max-height: 48vh;
+}

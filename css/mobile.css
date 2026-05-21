@@ -38,7 +38,7 @@ body.mobile-view {
     /* Responsive width tokens for adaptive tablet/foldable design */
     --mobile-max-width: 420px;
     --mobile-search-max-width: 440px;
-    --mobile-platter-size: min(76vw, 300px);
+    --mobile-platter-size: min(65vw, 38vh, 260px);
 
     /* Mobile-specific theme variables - Light mode default */
     --mobile-container-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(245, 250, 248, 0.82));
@@ -282,7 +282,8 @@ body.mobile-view .cover-area {
     padding: 0;
     align-items: center;
     text-align: center;
-    gap: clamp(16px, 4vw, 24px);
+    gap: clamp(24px, 5vw, 32px);
+    margin-top: clamp(12px, 3vh, 24px);
     position: relative;
 }
 
