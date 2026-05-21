@@ -623,12 +623,12 @@ body.background-transitioning .background-stage__layer--transition {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: 15px;
+    font-size: 13px;
     margin-bottom: 4px;
 }
 
 .search-result-artist {
-    font-size: 13px;
+    font-size: 11px;
     color: var(--text-secondary-color);
     white-space: nowrap;
     overflow: hidden;
