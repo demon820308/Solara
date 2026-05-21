@@ -3433,6 +3433,7 @@ function setupInteractions() {
         if (!state.themeDefaultsCaptured) {
             captureThemeDefaults();
         }
+        document.documentElement.classList.toggle("dark-mode", isDark);
         document.body.classList.toggle("dark-mode", isDark);
         if (dom.themeToggleButton) {
             dom.themeToggleButton.classList.toggle("is-dark", isDark);
@@ -3451,13 +3452,13 @@ function setupInteractions() {
 
     captureThemeDefaults();
     const savedTheme = safeGetLocalStorage("theme");
-    const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const initialIsDark = savedTheme ? savedTheme === "dark" : prefersDark;
+    // 改为手动切换：如果没有保存的主题，默认使用浅色模式（false）
+    const initialIsDark = savedTheme ? savedTheme === "dark" : false;
     applyTheme(initialIsDark);
 
     if (dom.themeToggleButton) {
         dom.themeToggleButton.addEventListener("click", () => {
-            const isDark = !document.body.classList.contains("dark-mode");
+            const isDark = !document.documentElement.classList.contains("dark-mode");
             applyTheme(isDark);
             safeSetLocalStorage("theme", isDark ? "dark" : "light");
         });
@@ -3465,7 +3466,7 @@ function setupInteractions() {
 
     if (dom.mobileThemeToggleButton) {
         dom.mobileThemeToggleButton.addEventListener("click", () => {
-            const isDark = !document.body.classList.contains("dark-mode");
+            const isDark = !document.documentElement.classList.contains("dark-mode");
             applyTheme(isDark);
             safeSetLocalStorage("theme", isDark ? "dark" : "light");
         });
