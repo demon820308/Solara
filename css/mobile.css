@@ -90,21 +90,21 @@ body.mobile-view.dark-mode {
     body.mobile-view {
         --mobile-max-width: 520px;
         --mobile-search-max-width: 540px;
-        --mobile-platter-size: 340px;
+        --mobile-platter-size: min(340px, 46vh);
     }
 }
 @media screen and (min-width: 768px) {
     body.mobile-view {
         --mobile-max-width: 680px;
         --mobile-search-max-width: 700px;
-        --mobile-platter-size: 420px;
+        --mobile-platter-size: min(420px, 46vh);
     }
 }
 @media screen and (min-width: 1024px) {
     body.mobile-view {
         --mobile-max-width: 760px;
         --mobile-search-max-width: 780px;
-        --mobile-platter-size: 460px;
+        --mobile-platter-size: min(460px, 46vh);
     }
 }
 
