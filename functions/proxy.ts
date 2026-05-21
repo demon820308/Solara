@@ -1,5 +1,5 @@
 const API_BASE_URL = "https://music-api.gdstudio.xyz/api.php";
-const KUWO_HOST_PATTERN = /(^|\.)kuwo\.cn$/i;
+const ALLOWED_HOST_PATTERN = /(^|\.)(kuwo\.cn|126\.net|music\.126\.net|joox\.com|bilivideo\.com|bilibili\.com|akamaized\.net|qq\.com|qpic\.cn|migu\.cn|kgimg\.com|kugou\.com|myqcloud\.com)$/i;
 const SAFE_RESPONSE_HEADERS = ["content-type", "cache-control", "accept-ranges", "content-length", "content-range", "etag", "last-modified", "expires"];
 
 function createCorsHeaders(init?: Headers): Headers {
@@ -30,50 +30,69 @@ function handleOptions(): Response {
   });
 }
 
-function isAllowedKuwoHost(hostname: string): boolean {
+function isAllowedHost(hostname: string): boolean {
   if (!hostname) return false;
-  return KUWO_HOST_PATTERN.test(hostname);
+  return ALLOWED_HOST_PATTERN.test(hostname);
 }
 
-function normalizeKuwoUrl(rawUrl: string): URL | null {
+function normalizeAudioUrl(rawUrl: string): URL | null {
   try {
     const parsed = new URL(rawUrl);
-    if (!isAllowedKuwoHost(parsed.hostname)) {
+    if (!isAllowedHost(parsed.hostname)) {
       return null;
     }
     if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
       return null;
     }
-    parsed.protocol = "http:";
+    // For Kuwo, force http protocol if required by their servers
+    if (/(^|\.)kuwo\.cn$/i.test(parsed.hostname)) {
+      parsed.protocol = "http:";
+    }
     return parsed;
   } catch {
     return null;
   }
 }
 
-async function proxyKuwoAudio(targetUrl: string, request: Request): Promise<Response> {
-  const normalized = normalizeKuwoUrl(targetUrl);
+async function proxyAudio(targetUrl: string, request: Request, downloadFilename?: string | null): Promise<Response> {
+  const normalized = normalizeAudioUrl(targetUrl);
   if (!normalized) {
     return new Response("Invalid target", { status: 400 });
   }
 
-  const init: RequestInit = {
-    method: request.method,
-    headers: {
-      "User-Agent": request.headers.get("User-Agent") ?? "Mozilla/5.0",
-      "Referer": "https://www.kuwo.cn/",
-    },
+  const headersObj: Record<string, string> = {
+    "User-Agent": request.headers.get("User-Agent") ?? "Mozilla/5.0",
   };
+
+  const hostname = normalized.hostname;
+  if (/(^|\.)kuwo\.cn$/i.test(hostname)) {
+    headersObj["Referer"] = "https://www.kuwo.cn/";
+  } else if (/(^|\.)(126\.net|music\.126\.net)$/i.test(hostname)) {
+    headersObj["Referer"] = "https://music.163.com/";
+  } else if (/(^|\.)(bilibili\.com|bilivideo\.com)$/i.test(hostname)) {
+    headersObj["Referer"] = "https://www.bilibili.com/";
+    headersObj["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+  }
 
   const rangeHeader = request.headers.get("Range");
   if (rangeHeader) {
-    (init.headers as Record<string, string>)["Range"] = rangeHeader;
+    headersObj["Range"] = rangeHeader;
   }
+
+  const init: RequestInit = {
+    method: request.method,
+    headers: headersObj,
+  };
 
   const upstream = await fetch(normalized.toString(), init);
   const headers = createCorsHeaders(upstream.headers);
   if (!headers.has("Cache-Control")) {
     headers.set("Cache-Control", "public, max-age=3600");
+  }
+
+  if (downloadFilename) {
+    headers.set("Content-Disposition", `attachment; filename*=UTF-8''${encodeURIComponent(downloadFilename)}`);
+    headers.set("Content-Type", "application/octet-stream");
   }
 
   return new Response(upstream.body, {
@@ -187,7 +206,8 @@ export async function onRequest({ request, waitUntil }: { request: Request, wait
   const target = url.searchParams.get("target");
 
   if (target) {
-    return proxyKuwoAudio(target, request);
+    const filename = url.searchParams.get("filename");
+    return proxyAudio(target, request, filename);
   }
 
   return proxyApiRequest(url, request, waitUntil);

@@ -636,7 +636,9 @@ function buildAudioProxyUrl(url) {
             return parsedUrl.toString();
         }
 
-        if (parsedUrl.protocol === "http:" && /(^|\.)kuwo\.cn$/i.test(parsedUrl.hostname)) {
+        const isMusicHost = /(^|\.)(kuwo\.cn|126\.net|music\.126\.net|joox\.com|bilivideo\.com|bilibili\.com|akamaized\.net|qq\.com|qpic\.cn|migu\.cn|kgimg\.com|kugou\.com|myqcloud\.com)$/i.test(parsedUrl.hostname);
+
+        if (parsedUrl.protocol === "http:" && isMusicHost) {
             return `${API.baseUrl}?target=${encodeURIComponent(parsedUrl.toString())}`;
         }
 
@@ -6310,54 +6312,69 @@ async function downloadSong(song, quality = "320") {
 
             const artistName = Array.isArray(song.artist) ? song.artist.join(", ") : (song.artist || "未知艺术家");
             const downloadFileName = `${song.name} - ${artistName}.${fileExtension}`;
-            let downloadedBlob = null;
-            let successfulDownloadUrl = null;
-            const downloadErrors = [];
 
-            for (const candidateUrl of candidateDownloadUrls) {
-                try {
-                    const response = await fetch(candidateUrl, {
-                        method: "GET",
-                        mode: "cors",
-                        credentials: "omit",
-                    });
+            const parsedUrl = new URL(audioData.url, window.location.href);
+            const isMusicHost = /(^|\.)(kuwo\.cn|126\.net|music\.126\.net|joox\.com|bilivideo\.com|bilibili\.com|akamaized\.net|qq\.com|qpic\.cn|migu\.cn|kgimg\.com|kugou\.com|myqcloud\.com)$/i.test(parsedUrl.hostname);
 
-                    if (!response.ok) {
-                        throw new Error(`HTTP ${response.status}`);
+            if (isMusicHost) {
+                // 如果是支持的音乐域名，直接通过后端代理附件下载，避免跨域、混合内容、密码验证拦截以及 WebView Blob 下载限制
+                const downloadUrl = `${API.baseUrl}?target=${encodeURIComponent(audioData.url)}&filename=${encodeURIComponent(downloadFileName)}`;
+                const link = document.createElement("a");
+                link.href = downloadUrl;
+                link.download = downloadFileName;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                showNotification("下载已开始", "success");
+            } else {
+                // 否则回退到原有的 fetch Blob 模式
+                let downloadedBlob = null;
+                let successfulDownloadUrl = null;
+                const downloadErrors = [];
+
+                for (const candidateUrl of candidateDownloadUrls) {
+                    try {
+                        const response = await fetch(candidateUrl, {
+                            method: "GET",
+                            mode: "cors",
+                        });
+
+                        if (!response.ok) {
+                            throw new Error(`HTTP ${response.status}`);
+                        }
+
+                        downloadedBlob = await response.blob();
+                        if (!downloadedBlob || downloadedBlob.size === 0) {
+                            throw new Error("EMPTY_BLOB");
+                        }
+
+                        successfulDownloadUrl = candidateUrl;
+                        break;
+                    } catch (error) {
+                        downloadErrors.push({ url: candidateUrl, error });
+                        console.warn("音频直链下载失败，尝试下一个地址:", candidateUrl, error);
                     }
+                }
 
-                    downloadedBlob = await response.blob();
-                    if (!downloadedBlob || downloadedBlob.size === 0) {
-                        throw new Error("EMPTY_BLOB");
+                if (downloadedBlob && downloadedBlob.size > 0) {
+                    if (successfulDownloadUrl && successfulDownloadUrl !== candidateDownloadUrls[0]) {
+                        debugLog(`下载已回退至备用地址: ${successfulDownloadUrl}`);
                     }
-
-                    successfulDownloadUrl = candidateUrl;
-                    break;
-                } catch (error) {
-                    downloadErrors.push({ url: candidateUrl, error });
-                    console.warn("音频直链下载失败，尝试下一个地址:", candidateUrl, error);
+                    const objectUrl = URL.createObjectURL(downloadedBlob);
+                    const link = document.createElement("a");
+                    link.href = objectUrl;
+                    link.download = downloadFileName;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    setTimeout(() => URL.revokeObjectURL(objectUrl), 0);
+                    showNotification("下载已开始", "success");
+                } else {
+                    // 如果 Blob 下载也失败了，直接在新窗口打开进行兜底
+                    window.open(preferredAudioUrl, "_blank");
+                    showNotification("已尝试在浏览器新标签页中打开以下载", "info");
                 }
             }
-
-            if (!downloadedBlob) {
-                console.error("所有下载地址均不可用:", downloadErrors);
-                throw new Error("无法直接下载音频文件");
-            }
-
-            if (successfulDownloadUrl && successfulDownloadUrl !== candidateDownloadUrls[0]) {
-                debugLog(`下载已回退至备用地址: ${successfulDownloadUrl}`);
-            }
-
-            const objectUrl = URL.createObjectURL(downloadedBlob);
-            const link = document.createElement("a");
-            link.href = objectUrl;
-            link.download = downloadFileName;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            setTimeout(() => URL.revokeObjectURL(objectUrl), 0);
-
-            showNotification("下载已开始", "success");
         } else {
             throw new Error("无法获取下载地址");
         }
