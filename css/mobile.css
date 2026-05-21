@@ -209,6 +209,33 @@ body.mobile-view .mobile-toolbar__button:hover {
     border-color: var(--mobile-btn-border);
 }
 
+body.mobile-view #mobileThemeToggleButton {
+    position: relative !important;
+    overflow: hidden !important;
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+    border: 1px solid var(--mobile-btn-border) !important;
+    background: var(--mobile-btn-bg) !important;
+    color: var(--mobile-btn-text) !important;
+    transform: none !important;
+    box-shadow: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+body.mobile-view #mobileThemeToggleButton:active {
+    background: var(--mobile-item-hover) !important;
+    color: var(--text-color) !important;
+    transform: scale(0.95) !important;
+}
+
+body.mobile-view #mobileThemeToggleButton.is-dark {
+    background: var(--mobile-btn-bg) !important;
+    border-color: var(--mobile-btn-border) !important;
+}
+
 body.mobile-view .main-content {
     display: flex;
     flex-direction: column;

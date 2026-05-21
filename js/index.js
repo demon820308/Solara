@@ -15,6 +15,7 @@ const dom = {
     mobileInlineLyricsContent: document.getElementById("mobileInlineLyricsContent"),
     audioPlayer: document.getElementById("audioPlayer"),
     themeToggleButton: document.getElementById("themeToggleButton"),
+    mobileThemeToggleButton: document.getElementById("mobileThemeToggleButton"),
     loadOnlineBtn: document.getElementById("loadOnlineBtn"),
     showPlaylistBtn: document.getElementById("showPlaylistBtn"),
     showLyricsBtn: document.getElementById("showLyricsBtn"),
@@ -3433,10 +3434,18 @@ function setupInteractions() {
             captureThemeDefaults();
         }
         document.body.classList.toggle("dark-mode", isDark);
-        dom.themeToggleButton.classList.toggle("is-dark", isDark);
-        const label = isDark ? "切换为浅色模式" : "切换为深色模式";
-        dom.themeToggleButton.setAttribute("aria-label", label);
-        dom.themeToggleButton.setAttribute("title", label);
+        if (dom.themeToggleButton) {
+            dom.themeToggleButton.classList.toggle("is-dark", isDark);
+            const label = isDark ? "切换为浅色模式" : "切换为深色模式";
+            dom.themeToggleButton.setAttribute("aria-label", label);
+            dom.themeToggleButton.setAttribute("title", label);
+        }
+        if (dom.mobileThemeToggleButton) {
+            dom.mobileThemeToggleButton.classList.toggle("is-dark", isDark);
+            const label = isDark ? "切换为浅色模式" : "切换为深色模式";
+            dom.mobileThemeToggleButton.setAttribute("aria-label", label);
+            dom.mobileThemeToggleButton.setAttribute("title", label);
+        }
         applyDynamicGradient();
     }
 
@@ -3446,11 +3455,21 @@ function setupInteractions() {
     const initialIsDark = savedTheme ? savedTheme === "dark" : prefersDark;
     applyTheme(initialIsDark);
 
-    dom.themeToggleButton.addEventListener("click", () => {
-        const isDark = !document.body.classList.contains("dark-mode");
-        applyTheme(isDark);
-        safeSetLocalStorage("theme", isDark ? "dark" : "light");
-    });
+    if (dom.themeToggleButton) {
+        dom.themeToggleButton.addEventListener("click", () => {
+            const isDark = !document.body.classList.contains("dark-mode");
+            applyTheme(isDark);
+            safeSetLocalStorage("theme", isDark ? "dark" : "light");
+        });
+    }
+
+    if (dom.mobileThemeToggleButton) {
+        dom.mobileThemeToggleButton.addEventListener("click", () => {
+            const isDark = !document.body.classList.contains("dark-mode");
+            applyTheme(isDark);
+            safeSetLocalStorage("theme", isDark ? "dark" : "light");
+        });
+    }
 
     dom.audioPlayer.volume = state.volume;
     dom.volumeSlider.value = state.volume;
