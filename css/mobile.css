@@ -35,6 +35,10 @@ body.mobile-view {
     --mobile-ring-feather: clamp(120px, 24vw, 280px);
     --mobile-ring-vertical-shift: calc((env(safe-area-inset-top, 0px) * 0.5) - 24px);
 
+    /* Responsive width tokens for adaptive tablet/foldable design */
+    --mobile-max-width: 420px;
+    --mobile-search-max-width: 440px;
+
     /* Mobile-specific theme variables - Light mode default */
     --mobile-container-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(245, 250, 248, 0.82));
     --mobile-container-border: rgba(0, 0, 0, 0.08);
@@ -78,6 +82,26 @@ body.mobile-view.dark-mode {
     --mobile-handle-bg: rgba(255, 255, 255, 0.3);
     --mobile-shadow: 0 -20px 50px rgba(0, 0, 0, 0.45);
     --mobile-track-bg: rgba(255, 255, 255, 0.15);
+}
+
+/* Media Queries for responsive scaling on wider mobile-view screens (foldables & tablets) */
+@media screen and (min-width: 480px) {
+    body.mobile-view {
+        --mobile-max-width: 520px;
+        --mobile-search-max-width: 540px;
+    }
+}
+@media screen and (min-width: 768px) {
+    body.mobile-view {
+        --mobile-max-width: 680px;
+        --mobile-search-max-width: 700px;
+    }
+}
+@media screen and (min-width: 1024px) {
+    body.mobile-view {
+        --mobile-max-width: 760px;
+        --mobile-search-max-width: 780px;
+    }
 }
 
 body.mobile-view .background-stage {
@@ -132,7 +156,7 @@ body.mobile-view .background-stage {
 
 body.mobile-view .container {
     width: 100%;
-    max-width: 420px;
+    max-width: var(--mobile-max-width);
     background: var(--mobile-container-bg);
     border: 1px solid var(--mobile-container-border);
     backdrop-filter: blur(25px);
@@ -548,6 +572,8 @@ body.mobile-view .transport-controls {
     grid-area: unset;
     order: 2;
     width: 100%;
+    max-width: 460px;
+    margin-inline: auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -652,7 +678,7 @@ body.mobile-view .mobile-panel {
     left: 50%;
     transform: translate(-50%, 110%);
     bottom: 0;
-    width: min(100%, 420px);
+    width: min(100%, var(--mobile-max-width));
     background: var(--mobile-panel-bg);
     border: 1px solid var(--mobile-panel-border);
     border-bottom: none;
@@ -1040,7 +1066,7 @@ body.mobile-view.mobile-search-open .search-area {
 
 body.mobile-view .search-controls-wrapper {
     width: 100%;
-    max-width: 440px;
+    max-width: var(--mobile-search-max-width);
     align-self: center;
     display: flex;
     flex-direction: column;
@@ -1059,7 +1085,7 @@ body.mobile-view .search-header {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    max-width: 440px;
+    max-width: var(--mobile-search-max-width);
     align-self: center;
     margin-bottom: 12px;
     padding: 0 4px;
@@ -1171,7 +1197,7 @@ body.mobile-view .search-results {
     flex: 1;
     overflow-y: auto;
     width: 100%;
-    max-width: 440px;
+    max-width: var(--mobile-search-max-width);
     align-self: center;
     margin-top: 0;
     position: relative;
