@@ -283,7 +283,7 @@ body.mobile-view .cover-area {
     align-items: center;
     text-align: center;
     gap: clamp(24px, 5vw, 32px);
-    margin-top: clamp(12px, 3vh, 24px);
+    margin-top: clamp(2px, 0.5vh, 6px) !important;
     position: relative;
 }
 
