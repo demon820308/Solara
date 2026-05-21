@@ -567,7 +567,9 @@ body.mobile-view .mobile-panel {
     transform: translate(-50%, 110%);
     bottom: 0;
     width: min(100%, 420px);
-    background: rgba(13, 16, 24, 0.96);
+    background: linear-gradient(135deg, rgba(24, 30, 42, 0.97) 0%, rgba(13, 16, 24, 0.99) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: none;
     backdrop-filter: blur(28px);
     border-radius: 28px 28px 0 0;
     padding: 18px clamp(18px, 6vw, 28px) calc(env(safe-area-inset-bottom) + clamp(22px, 7vw, 32px));
@@ -603,8 +605,27 @@ body.mobile-view .mobile-panel-handle {
     width: 56px;
     height: 4px;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.38);
     margin: 0 auto 10px;
+}
+
+body.mobile-view .mobile-panel-header .playlist-tab {
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    color: rgba(255, 255, 255, 0.72);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+body.mobile-view .mobile-panel-header .playlist-tab.active {
+    background: var(--primary-color);
+    color: #ffffff;
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(26, 188, 156, 0.35);
+}
+
+body.mobile-view .mobile-panel-header .playlist-tab:hover:not(.active) {
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.38);
+    background: rgba(255, 255, 255, 0.08);
 }
 
 body.mobile-view .mobile-panel-actions {
@@ -632,11 +653,12 @@ body.mobile-view .mobile-close-btn {
     width: 38px;
     height: 38px;
     border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.14);
     color: #ffffff;
     cursor: pointer;
     transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
 body.mobile-view .mobile-panel-action-btn i,
@@ -647,6 +669,12 @@ body.mobile-view .mobile-close-btn i {
 body.mobile-view .mobile-panel-action-btn:active,
 body.mobile-view .mobile-close-btn:active {
     transform: translateY(1px);
+}
+
+body.mobile-view .mobile-panel-action-btn:hover,
+body.mobile-view .mobile-close-btn:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.22);
 }
 
 body.mobile-view .mobile-panel-action-btn:focus-visible,
@@ -662,16 +690,16 @@ body.mobile-view .mobile-panel-action-btn:disabled {
 }
 
 body.mobile-view .mobile-panel-clear-btn {
-    color: rgba(255, 255, 255, 0.9);
-    border-color: rgba(255, 255, 255, 0.2);
-    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.95);
+    border-color: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.12);
 }
 
 body.mobile-view .mobile-panel-clear-btn:not([hidden]):hover,
 body.mobile-view .mobile-panel-clear-btn:not([hidden]):focus-visible {
     color: #ffd2b3;
-    border-color: rgba(255, 255, 255, 0.32);
-    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.38);
+    background: rgba(255, 255, 255, 0.18);
 }
 
 body.mobile-view .mobile-panel-clear-btn[hidden] {
@@ -717,64 +745,160 @@ body.mobile-view .playlist-items .playlist-item {
     padding: 12px 108px 12px 18px;
     white-space: normal;
     line-height: 1.35;
-    min-height: 0;
+    min-height: 52px;
     margin-bottom: 4px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.09);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    color: #ffffff;
+    touch-action: manipulation;
+    cursor: pointer;
+    pointer-events: auto;
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    align-items: center;
 }
 
 body.mobile-view .playlist-items .playlist-item:focus-visible {
-    outline: 2px solid rgba(243, 162, 91, 0.85);
+    outline: 2px solid rgba(26, 188, 156, 0.85);
     outline-offset: 2px;
 }
 
 body.mobile-view .playlist-items .playlist-item:hover {
     transform: none;
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.12);
 }
 
-body.mobile-view .playlist-items .playlist-item .playlist-item-favorite,
-body.mobile-view .playlist-items .playlist-item .playlist-item-download,
-body.mobile-view .playlist-items .playlist-item .playlist-item-remove {
-    width: 28px;
-    height: 28px;
-    border-radius: 8px;
+body.mobile-view .playlist-items .playlist-item .playlist-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    align-items: flex-start;
+    justify-content: center;
+    max-width: 100%;
+    overflow: hidden;
 }
 
-body.mobile-view .playlist-items .playlist-item .playlist-item-favorite {
-    right: 88px;
+body.mobile-view .playlist-items .playlist-item .playlist-item-divider {
+    display: none;
 }
 
-body.mobile-view .playlist-items .playlist-item .playlist-item-download {
-    right: 48px;
-}
-
-body.mobile-view .playlist-items .playlist-item .playlist-item-remove {
-    right: 12px;
-}
-
-body.mobile-view .playlist-items .playlist-item {
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.05);
+body.mobile-view .playlist-items .playlist-item .playlist-item-name {
+    font-size: 14px;
+    font-weight: 600;
     color: #ffffff;
-    touch-action: manipulation;
-    cursor: pointer;
-    pointer-events: auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+body.mobile-view .playlist-items .playlist-item .playlist-item-artist {
+    font-size: 11px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.65);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+/* current playing item */
+body.mobile-view .playlist-items .playlist-item.current {
+    background: linear-gradient(90deg, rgba(26, 188, 156, 0.22) 0%, rgba(26, 188, 156, 0.08) 100%);
+    border-left: 3.5px solid #1abc9c;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-top-color: rgba(26, 188, 156, 0.15);
+    border-right-color: rgba(26, 188, 156, 0.1);
+    border-bottom-color: rgba(26, 188, 156, 0.1);
+}
+
+body.mobile-view .playlist-items .playlist-item.current .playlist-item-name {
+    color: #1abc9c;
+}
+
+body.mobile-view .playlist-items .playlist-item.current .playlist-item-artist {
+    color: rgba(26, 188, 156, 0.8);
 }
 
 body.mobile-view .playlist-items .playlist-item:last-child {
     margin-bottom: 0;
 }
 
-body.mobile-view .playlist-items .playlist-item:hover,
-body.mobile-view .playlist-items .playlist-item.current {
-    background: rgba(243, 162, 91, 0.25);
-    color: #ffffff;
-}
-
-body.mobile-view .favorites .favorite-item-action {
+/* action buttons */
+body.mobile-view .playlist-items .playlist-item .playlist-item-favorite,
+body.mobile-view .playlist-items .playlist-item .playlist-item-download,
+body.mobile-view .playlist-items .playlist-item .playlist-item-remove,
+body.mobile-view .playlist-items .playlist-item .favorite-item-action {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%) !important;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.95);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     opacity: 1;
+    font-size: 11px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    z-index: 5;
 }
 
-body.mobile-view .favorites .favorite-item-action:hover {
-    transform: translateY(-50%);
+body.mobile-view .playlist-items .playlist-item .playlist-item-favorite,
+body.mobile-view .playlist-items .playlist-item .favorite-item-action--add {
+    right: 88px;
+}
+
+body.mobile-view .playlist-items .playlist-item .playlist-item-download,
+body.mobile-view .playlist-items .playlist-item .favorite-item-action--download {
+    right: 48px;
+}
+
+body.mobile-view .playlist-items .playlist-item .playlist-item-remove,
+body.mobile-view .playlist-items .playlist-item .favorite-item-action--remove {
+    right: 12px;
+}
+
+/* button interactions */
+body.mobile-view .playlist-items .playlist-item .playlist-item-favorite:hover,
+body.mobile-view .playlist-items .playlist-item .playlist-item-favorite:active,
+body.mobile-view .playlist-items .playlist-item .playlist-item-favorite.is-active {
+    color: #ff4d67;
+    background: rgba(255, 77, 103, 0.15);
+    border-color: rgba(255, 77, 103, 0.4);
+}
+
+body.mobile-view .playlist-items .playlist-item .playlist-item-download:hover,
+body.mobile-view .playlist-items .playlist-item .playlist-item-download:active,
+body.mobile-view .playlist-items .playlist-item .favorite-item-action--download:hover,
+body.mobile-view .playlist-items .playlist-item .favorite-item-action--download:active {
+    color: #1abc9c;
+    background: rgba(26, 188, 156, 0.15);
+    border-color: rgba(26, 188, 156, 0.4);
+}
+
+body.mobile-view .playlist-items .playlist-item .favorite-item-action--add:hover,
+body.mobile-view .playlist-items .playlist-item .favorite-item-action--add:active {
+    color: #2ecc71;
+    background: rgba(46, 204, 113, 0.15);
+    border-color: rgba(46, 204, 113, 0.4);
+}
+
+body.mobile-view .playlist-items .playlist-item .playlist-item-remove:hover,
+body.mobile-view .playlist-items .playlist-item .playlist-item-remove:active,
+body.mobile-view .playlist-items .playlist-item .favorite-item-action--remove:hover,
+body.mobile-view .playlist-items .playlist-item .favorite-item-action--remove:active {
+    color: #ff6b6b;
+    background: rgba(255, 107, 107, 0.15);
+    border-color: rgba(255, 107, 107, 0.4);
 }
 
 body.mobile-view .lyrics {
